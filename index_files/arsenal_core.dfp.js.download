@@ -1,0 +1,55 @@
+(function arsenalCoreAdSetup($, settings) {
+  'use strict';
+
+      var tabletBreakpoint = 1024;
+      var mobileBreakpoint = 640;
+
+      $('body .ad').each(function () {
+        displayAd($(this), tabletBreakpoint, mobileBreakpoint);
+      });
+
+      $(window).resize(function () {
+        $('body .ad').each(function () {
+          displayAd($(this), tabletBreakpoint, mobileBreakpoint);
+        });
+      });
+
+      function displayAd(tag, tabletBreakpoint, mobileBreakpoint) {
+        var width = $('body').outerWidth();
+        var isTablet = (width <= tabletBreakpoint && width >= mobileBreakpoint);
+        var isMobile = width < mobileBreakpoint;
+        var isDesktop = width > tabletBreakpoint;
+        var activeTheme = settings.activeTheme;
+
+        var id = $(tag).attr('id');
+        var device = $(tag).attr('data-device');
+        if (device === 'mobile' && isMobile && activeTheme !== 'arsenal_junior') {
+          if ($(tag).html().length === 0) {
+            googletag.cmd.push(function () {googletag.display(id);});
+          }
+          else {
+            $(tag).show();
+          }
+        }
+        else if (device === 'tablet' && isTablet && activeTheme !== 'arsenal_junior') {
+          if ($(tag).html().length === 0) {
+            googletag.cmd.push(function () {googletag.display(id);});
+          }
+          else {
+            $(tag).show();
+          }
+        }
+        else if (device === 'desktop' && isDesktop) {
+          if ($(tag).html().length === 0) {
+            googletag.cmd.push(function () {googletag.display(id);});
+          }
+          else {
+            $(tag).show();
+          }
+        }
+        else {
+          $(tag).hide();
+        }
+      }
+
+}(jQuery, drupalSettings));
